@@ -30,4 +30,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### json-server
 
+```
 서버 시작 : json-server --watch db.json
+```
