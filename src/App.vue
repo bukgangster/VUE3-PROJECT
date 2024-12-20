@@ -11,6 +11,7 @@
     <hr />
 
     <TodoSimpleForm @add-todo="addTodo" />
+    <div>{{ error }}</div>
 
     <div v-if="!filteredTodos.length">There is nothing to display.</div>
     <TodoList
@@ -22,6 +23,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 import { ref, computed } from "vue";
 import TodoSimpleForm from "./components/TodoSimpleForm.vue";
 import TodoList from "./components/TodoList.vue";
@@ -33,9 +36,23 @@ export default {
   },
   setup() {
     const todos = ref([]);
+    const error = ref("");
 
     const addTodo = (todo) => {
-      todos.value.push(todo);
+      error.value = "";
+      axios
+        .post("http://localhost:3000/todos", {
+          subject: todo.subject,
+          completed: false,
+        })
+        .then((res) => {
+          console.log(res);
+          todos.value.push(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          error.value = "Somthing Error";
+        });
     };
 
     const deleteTodo = (index) => {
@@ -60,6 +77,7 @@ export default {
     return {
       todos,
       searchText,
+      error,
 
       addTodo,
       deleteTodo,
