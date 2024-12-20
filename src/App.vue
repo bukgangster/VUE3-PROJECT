@@ -1,26 +1,78 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <h2>To-do List</h2>
+
+    <input
+      type="text"
+      class="form-control"
+      v-model="searchText"
+      placeholder="Search"
+    />
+    <hr />
+
+    <TodoSimpleForm @add-todo="addTodo" />
+
+    <div v-if="!filteredTodos.length">There is nothing to display.</div>
+    <TodoList
+      :todos="filteredTodos"
+      @toggle-todo="toggleTodo"
+      @delete-todo="deleteTodo"
+    />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { ref, computed } from "vue";
+import TodoSimpleForm from "./components/TodoSimpleForm.vue";
+import TodoList from "./components/TodoList.vue";
 
 export default {
-  name: 'App',
   components: {
-    HelloWorld
-  }
-}
+    TodoSimpleForm,
+    TodoList,
+  },
+  setup() {
+    const todos = ref([]);
+
+    const addTodo = (todo) => {
+      todos.value.push(todo);
+    };
+
+    const deleteTodo = (index) => {
+      todos.value.splice(index, 1);
+    };
+
+    const toggleTodo = (index) => {
+      console.log(index);
+      todos.value[index].completed = !todos.value[index].completed;
+    };
+
+    const searchText = ref("");
+    const filteredTodos = computed(() => {
+      if (searchText.value) {
+        return todos.value.filter((todo) => {
+          return todo.subject.includes(searchText.value);
+        });
+      }
+      return todos.value;
+    });
+
+    return {
+      todos,
+      searchText,
+
+      addTodo,
+      deleteTodo,
+      toggleTodo,
+      filteredTodos,
+    };
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.todo {
+  color: gray;
+  text-decoration: line-through;
 }
 </style>
