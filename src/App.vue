@@ -1,6 +1,8 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <router-link class="navbar-brand" to="/">Kossie Coder</router-link>
+    <router-link class="navbar-brand" :to="{ name: 'Home' }"
+      >Kossie Coder</router-link
+    >
 
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
@@ -9,7 +11,9 @@
     </ul>
   </nav>
 
-  <router-view />
+  <div class="container">
+    <router-view />
+  </div>
 </template>
 
 <script>
