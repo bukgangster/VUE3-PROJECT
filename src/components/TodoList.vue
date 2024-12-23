@@ -5,6 +5,7 @@
         <input
           class="form-check-input"
           type="checkbox"
+          :checked="todo.completed"
           @change="toggleTodo(index)"
         />
         <label class="form-check-label" :class="{ todo: todo.completed }">
