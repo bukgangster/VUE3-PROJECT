@@ -51,7 +51,7 @@
         box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
       "
     >
-      <div class="input-group">
+      <div class="input-group" style="gap: 10px">
         <input
           type="text"
           class="form-control"
@@ -60,7 +60,17 @@
           @keyup.enter="sendMessage"
           style="border: 1px solid #ddd; border-radius: 4px"
         />
-        <button class="btn btn-primary" @click="sendMessage">전송</button>
+        <button
+          class="btn btn-primary"
+          @click="sendMessage"
+          :disabled="loading"
+        >
+          {{ loading ? "답변을 생성 중입니다..." : "전송" }}
+        </button>
+      </div>
+      <div v-if="loading" class="loading-indicator text-center mt-3">
+        <span class="spinner-border text-primary" role="status"></span>
+        <span class="ms-2">답변을 생성 중입니다...</span>
       </div>
     </div>
   </div>
@@ -76,7 +86,7 @@ export default {
     const messages = ref([
       {
         id: 1,
-        text: "안녕하세요! 티반 브레인이에요.\n현재 고려대학교, 남서울대학교, 서강대학교, 성균관대학교, 연세대학교, 전남대학교 데이터만 저장이 되어있어요.",
+        text: "안녕하세요! 티반 브레인이에요.\n현재 고려대학교, 남서울대학교, 서강대학교, 성균관대학교, 연세대학교, 전남대학교 대해서만 제공이 되어요.\n대학소개, 모집일정, 모집학과, 지원자격 데이터에 대해서만 제공이 되어요.",
         sender: "other",
         time: "오전 10:00",
       },
@@ -84,6 +94,7 @@ export default {
 
     const newMessage = ref(""); // 새 메시지 입력값
     const chatBody = ref(null);
+    const loading = ref(false); // 로딩 상태
 
     // 메시지 전송 함수
     const sendMessage = () => {
@@ -95,6 +106,7 @@ export default {
 
     const getSmlData = async () => {
       try {
+        loading.value = true;
         const param = {
           queryMsg: newMessage.value,
         };
@@ -111,6 +123,8 @@ export default {
         });
       } catch (err) {
         console.log(err);
+      } finally {
+        loading.value = false;
       }
     };
 
@@ -140,6 +154,7 @@ export default {
       messages,
       newMessage,
       chatBody,
+      loading,
 
       sendMessage,
       scrollToBottom,
@@ -185,5 +200,11 @@ export default {
   padding: 10px;
   border-radius: 5px;
   background-color: #f9f9f9;
+}
+
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
