@@ -144,10 +144,10 @@ export default {
       }
     };
 
-    const deleteTodo = async (index) => {
+    const deleteTodo = async (id) => {
       error.value = "";
 
-      const id = todos.value[index].id;
+      // const id = todos.value[index].id;
       try {
         await axios.delete(`http://localhost:3000/todos/${id}`);
         getTodos(1);

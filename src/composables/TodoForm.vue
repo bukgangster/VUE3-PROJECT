@@ -3,13 +3,18 @@
   <form v-else @submit.prevent="onSave">
     <div class="row">
       <div class="col-6">
-        <div class="form-group">
+        <InputComp
+          label="Subject"
+          v-model:subject="todo.subject"
+          :error="subjectError"
+        />
+        <!-- <div class="form-group">
           <label>Subject</label>
           <input type="text" class="form-control" v-model="todo.subject" />
           <div v-if="subjectError" style="color: red">
             {{ subjectError }}
           </div>
-        </div>
+        </div> -->
       </div>
 
       <div v-if="editing" class="col-6">
@@ -45,15 +50,22 @@
     </button>
   </form>
 
-  <ToastComp v-if="showToast" :message="toastMessage" :type="toastAlertType" />
+  <transition name="fade">
+    <ToastComp
+      v-show="showToast"
+      :message="toastMessage"
+      :type="toastAlertType"
+    />
+  </transition>
 </template>
 
 <script>
 import ToastComp from "@/components/ToastComp.vue";
+import InputComp from "@/components/InputComp.vue";
 
 import { useToast } from "@/composables/toast";
 
-import { ref, computed } from "vue";
+import { ref, computed, onUpdated } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import _ from "lodash";
@@ -61,6 +73,7 @@ import _ from "lodash";
 export default {
   components: {
     ToastComp,
+    InputComp,
   },
   props: {
     editing: {
@@ -76,6 +89,11 @@ export default {
       completed: false,
       body: "",
     });
+
+    onUpdated(() => {
+      console.log(todo.value.subject);
+    });
+
     const subjectError = ref("");
     const originalTodo = ref(null);
     const loading = ref(false);
@@ -184,5 +202,22 @@ export default {
 <style scoped>
 .text-red {
   color: red;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  transform: translateY(0px);
 }
 </style>

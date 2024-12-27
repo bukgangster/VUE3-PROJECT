@@ -1,35 +1,58 @@
 <template>
-  <div class="card mt-2" v-for="(todo, index) in todos" :key="todo.id">
-    <div
-      class="card-body p-2 d-flex align-items-center"
-      style="cursor: pointer"
-      @click="moveToPage(todo.id)"
-    >
-      <div class="form-check flex-grow-1">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          :checked="todo.completed"
-          @change="toggleTodo(index, $event)"
-          @click.stop
-        />
-        <label class="form-check-label" :class="{ todo: todo.completed }">
-          {{ todo.subject }}
-        </label>
-      </div>
+  <!-- <div class="card mt-2" v-for="(todo, index) in todos" :key="todo.id"> -->
+  <ListComp :items="todos">
+    <template #default="{ item, index }">
+      <div
+        class="card-body p-2 d-flex align-items-center"
+        style="cursor: pointer"
+        @click="moveToPage(item.id)"
+      >
+        <div class="flex-grow-1">
+          <input
+            class="ml-2 mr-2"
+            type="checkbox"
+            :checked="item.completed"
+            @change="toggleTodo(index, $event)"
+            @click.stop
+          />
+          <span :class="{ item: item.completed }">
+            {{ item.subject }}
+          </span>
+        </div>
 
-      <div>
-        <button class="btn btn-danger btn-sm" @click.stop="deleteTodo(index)">
-          Delete
-        </button>
+        <div>
+          <button
+            class="btn btn-danger btn-sm"
+            @click.stop="openModal(item.id)"
+          >
+            Delete
+          </button>
+        </div>
       </div>
-    </div>
-  </div>
+    </template>
+  </ListComp>
+  <!-- </div> -->
+
+  <teleport to="#modal">
+    <DeleteModalComp
+      v-if="showModal"
+      @close="closeModal"
+      @delete="deleteTodo"
+    />
+  </teleport>
 </template>
 
 <script>
+import DeleteModalComp from "./DeleteModalComp.vue";
+import ListComp from "./ListComp.vue";
+
 import { useRouter } from "vue-router";
+import { ref } from "vue";
 export default {
+  components: {
+    DeleteModalComp,
+    ListComp,
+  },
   props: {
     todos: {
       type: Array,
@@ -40,13 +63,28 @@ export default {
 
   setup(props, { emit }) {
     const router = useRouter();
+    const showModal = ref(false);
+    const todoDeleteId = ref(null);
+
+    const openModal = (id) => {
+      todoDeleteId.value = id;
+      showModal.value = true;
+    };
+
+    const closeModal = () => {
+      todoDeleteId.value = null;
+      showModal.value = false;
+    };
 
     const toggleTodo = (index, event) => {
       emit("toggle-todo", index, event.target.checked);
     };
 
-    const deleteTodo = (index) => {
-      emit("delete-todo", index);
+    const deleteTodo = () => {
+      emit("delete-todo", todoDeleteId.value);
+
+      showModal.value = false;
+      todoDeleteId.value = null;
     };
 
     const moveToPage = (todoId) => {
@@ -64,6 +102,11 @@ export default {
       toggleTodo,
       deleteTodo,
       moveToPage,
+      openModal,
+      closeModal,
+
+      showModal,
+      todoDeleteId,
     };
   },
 };
