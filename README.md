@@ -15,6 +15,14 @@ npm version : 10.9.0
 서버실행 : npm run serve -- --port=5400
 
 ```bash
+백그라운드 서버실행 ==> nohup npm run serve -- --port=5400 > serve.log 2>&1 &
+
+PID 확인 방법 => sudo netstat -tuln
+
+PORT KILL ==> kill -9 PID
+```
+
+```bash
 아이피 : 43.200.170.140
 사용자 : ubuntu
 key :
