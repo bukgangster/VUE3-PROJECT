@@ -11,13 +11,16 @@ npm version : 10.9.0
 
 ## 서버 정보
 
-소스위치 : /app/llm_frontend
-서버실행 : npm run serve -- --port=5400
-
 ```bash
-백그라운드 서버실행 ==> nohup npm run serve -- --port=5400 > serve.log 2>&1 &
+소스위치 : /app/llm_frontend
 
-PID 확인 방법 => sudo netstat -tuln
+백그라운드 서버실행 ==>
+nohup npm run serve -- --port=5400 > serve.log 2>&1 &
+exit
+
+네트워크 확인 ==> sudo netstat -tuln
+
+PID 확인 방법 => sudo lsof -i :5400
 
 PORT KILL ==> kill -9 PID
 ```
