@@ -7,6 +7,7 @@
         background: linear-gradient(to bottom, #1e3a78 60%, #ffc107 40%);
         border-radius: 12px 12px 0 0;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
       "
     >
       <div>
