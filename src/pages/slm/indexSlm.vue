@@ -99,7 +99,7 @@ export default {
           queryMsg: newMessage.value,
         };
         const res = await axios.post(
-          `http://43.203.214.173:5300/lang/getVectorRetrieverChain`,
+          `https://43.203.214.173:5300/lang/getVectorRetrieverChain`,
           param
         );
         console.log(res);
