@@ -1,18 +1,9 @@
 {
   "todos": [
     {
-      "subject": "2",
-      "completed": true,
-      "id": 3
-    },
-    {
-      "subject": "1242245",
-      "completed": false,
-      "id": 5
-    },
-    {
       "subject": "6",
-      "completed": true,
+      "completed": false,
+      "body": "214",
       "id": 7
     },
     {
@@ -44,6 +35,24 @@
       "subject": "5",
       "completed": false,
       "id": 14
+    },
+    {
+      "subject": "buy milk",
+      "completed": false,
+      "body": "buy milk",
+      "id": 15
+    },
+    {
+      "subject": "but knif",
+      "completed": false,
+      "body": "but knif",
+      "id": 16
+    },
+    {
+      "subject": "124",
+      "completed": false,
+      "body": "124",
+      "id": 17
     }
   ]
 }

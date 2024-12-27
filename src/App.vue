@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav v-if="showNav" class="navbar navbar-expand-lg navbar-light bg-light">
     <router-link class="navbar-brand" :to="{ name: 'Home' }"
       >Kossie Coder</router-link
     >
@@ -17,10 +17,18 @@
 </template>
 
 <script>
+import { useRoute } from "vue-router";
+import { computed } from "vue";
 export default {
   components: {},
   setup() {
-    return {};
+    const route = useRoute();
+
+    const showNav = computed(() => route.name !== "SlmHome");
+
+    return {
+      showNav,
+    };
   },
 };
 </script>
