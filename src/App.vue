@@ -14,20 +14,36 @@
   <div class="container">
     <router-view />
   </div>
+
+  <ToastComp :message="toastMessage" :type="toastAlertType" />
 </template>
 
 <script>
 import { useRoute } from "vue-router";
 import { computed } from "vue";
+
+import ToastComp from "./components/ToastComp.vue";
+import { useToast } from "./composables/toast";
+
 export default {
-  components: {},
+  components: {
+    ToastComp,
+  },
   setup() {
     const route = useRoute();
 
     const showNav = computed(() => route.name !== "SlmHome");
 
+    const { toastMessage, toastAlertType, showToast, triggerToast } =
+      useToast();
+
     return {
       showNav,
+      toastMessage,
+      toastAlertType,
+      showToast,
+
+      triggerToast,
     };
   },
 };

@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "@/axios";
 
 import { ref, computed, watch } from "vue";
 // import TodoSimpleForm from "@/components/TodoSimpleForm.vue";
@@ -116,7 +116,7 @@ export default {
 
       try {
         const res = await axios.get(
-          `http://localhost:3000/todos?_sort=id&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
+          `todos?_sort=id&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
         );
         todos.value = res.data;
         numberOfTodos.value = res.headers["x-total-count"];
@@ -132,7 +132,7 @@ export default {
       error.value = "";
 
       try {
-        await axios.post("http://localhost:3000/todos", {
+        await axios.post("todos", {
           subject: todo.subject,
           completed: false,
         });
@@ -149,7 +149,7 @@ export default {
 
       // const id = todos.value[index].id;
       try {
-        await axios.delete(`http://localhost:3000/todos/${id}`);
+        await axios.delete(`todos/${id}`);
         getTodos(1);
       } catch (err) {
         console.log(err);
@@ -161,7 +161,7 @@ export default {
     const toggleTodo = async (index, checked) => {
       const id = todos.value[index].id;
       try {
-        await axios.patch(`http://localhost:3000/todos/${id}`, {
+        await axios.patch(`todos/${id}`, {
           completed: checked,
         });
 

@@ -67,7 +67,8 @@ import { useToast } from "@/composables/toast";
 
 import { ref, computed, onUpdated } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import axios from "axios";
+import axios from "@/axios";
+
 import _ from "lodash";
 
 export default {
@@ -120,7 +121,7 @@ export default {
     const getTodo = async () => {
       loading.value = true;
       try {
-        const res = await axios.get(`http://localhost:3000/todos/${todoId}`);
+        const res = await axios.get(`todos/${todoId}`);
 
         console.log(res);
 
@@ -165,15 +166,21 @@ export default {
           body: todo.value.body,
         };
         if (props.editing) {
-          res = await axios.put(`http://localhost:3000/todos/${todoId}`, data);
+          res = await axios.put(`todos/${todoId}`, data);
           originalTodo.value = { ...res.data };
         } else {
-          res = await axios.post(`http://localhost:3000/todos`, data);
+          res = await axios.post(`todos`, data);
           todo.value.subject = "";
           todo.value.body = "";
         }
 
         triggerToast(`Successfully ${props.editing ? "Updated" : "Created"}`);
+
+        if (!props.editing) {
+          router.push({
+            name: "Todos",
+          });
+        }
       } catch (err) {
         triggerToast("Something went wrong!!", "danger");
       }
