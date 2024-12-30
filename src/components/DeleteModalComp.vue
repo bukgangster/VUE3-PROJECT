@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { getCurrentInstance } from "vue";
 import ModalComp from "@/components/ModalComp.vue";
 export default {
   components: {
@@ -23,7 +24,9 @@ export default {
 
   emits: ["close", "delete"],
 
-  setup(props, { emit }) {
+  setup() {
+    const { emit } = getCurrentInstance();
+
     const onClose = () => {
       emit("close");
     };
