@@ -1,52 +1,58 @@
 <template>
-  <nav v-if="showNav" class="navbar navbar-expand-lg navbar-light bg-light">
-    <router-link class="navbar-brand" :to="{ name: 'Home' }"
-      >Kossie Coder</router-link
-    >
-
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <router-link class="nav-link" to="/todos">Todos</router-link>
-      </li>
-    </ul>
-  </nav>
-
   <div class="container">
+    <NavBar />
+
     <router-view />
   </div>
 
-  <ToastComp :message="toastMessage" :type="toastAlertType" />
+  <!-- <transition name="slide"> -->
+  <!-- <ToastComp :message="`hello`" :type="`success`" /> -->
+  <ToastComp />
+  <!-- </transition> -->
 </template>
 
 <script>
-import { useRoute } from "vue-router";
-import { computed } from "vue";
-
+import NavBar from "./components/NavBar.vue";
 import ToastComp from "./components/ToastComp.vue";
-import { useToast } from "./composables/toast";
-
+// import { useToast } from "./composables/toast";
+import { useStore } from "vuex";
 export default {
   components: {
+    NavBar,
     ToastComp,
   },
   setup() {
-    const route = useRoute();
+    const store = useStore();
+    console.log(store.state);
 
-    const showNav = computed(() => route.name !== "SlmHome");
-
-    const { toastMessage, toastAlertType, showToast, triggerToast } =
-      useToast();
+    // const { toastMessage, toastAlertType, showToast, triggerToast } =
+    //   useToast();
 
     return {
-      showNav,
-      toastMessage,
-      toastAlertType,
-      showToast,
-
-      triggerToast,
+      // toastMessage,
+      // toastAlertType,
+      // showToast,
+      // triggerToast,
     };
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  opacity: 1;
+  transform: translateY(0px);
+}
+</style>

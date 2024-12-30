@@ -28,38 +28,12 @@
   </div>
   <hr />
 
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
-      <li v-if="currentPage !== 1">
-        <a
-          style="cursor: pointer"
-          class="page-link"
-          @click="getTodos(currentPage - 1)"
-          >Previous
-        </a>
-      </li>
-      <li
-        v-for="page in numberOfPages"
-        :key="page"
-        class="page-item"
-        :class="currentPage === page ? 'active' : ''"
-      >
-        <a style="cursor: pointer" class="page-link" @click="getTodos(page)">{{
-          page
-        }}</a>
-      </li>
-      <li v-if="numberOfPages !== currentPage" class="page-item">
-        <a
-          style="cursor: pointer"
-          class="page-link"
-          @click="getTodos(currentPage + 1)"
-          >Next</a
-        >
-      </li>
-    </ul>
-  </nav>
-
-  <ToastComp v-if="showToast" :message="toastMessage" :type="toastAlertType" />
+  <PaginationComp
+    v-if="todos.length"
+    :numberOfPages="numberOfPages"
+    :currentPage="currentPage"
+    @click="getTodos"
+  />
 </template>
 
 <script>
@@ -68,7 +42,7 @@ import axios from "@/axios";
 import { ref, computed, watch } from "vue";
 // import TodoSimpleForm from "@/components/TodoSimpleForm.vue";
 import TodoList from "@/components/TodoList.vue";
-import ToastComp from "@/components/ToastComp.vue";
+import PaginationComp from "@/components/PaginationComp.vue";
 
 import { useToast } from "@/composables/toast";
 import { useRouter } from "vue-router";
@@ -77,7 +51,7 @@ export default {
   components: {
     // TodoSimpleForm,
     TodoList,
-    ToastComp,
+    PaginationComp,
   },
   setup() {
     const router = useRouter();
